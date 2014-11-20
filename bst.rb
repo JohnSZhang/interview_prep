@@ -1,17 +1,17 @@
-class binary_search
+class BinarySearch
   attr_reader :root
 
   def initialize(value = nil)
-    value.nil? @root = new tree_node(nil)
+    @root = TreeNode.new(value)
   end
 
   def insert(value)
-    @root.value.nil? ? @root = new tree_node(value) : @root.add_child( new tree_node(value))
+    @root.value.nil? ? @root = TreeNode.new(value) : @root.add_child(TreeNode.new(value))
   end
 
 end
 
-class tree_node
+class TreeNode
   attr_accessor :parent, :lchild, :rchild, :value
 
   def initialize(value)
