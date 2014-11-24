@@ -1,6 +1,25 @@
 class BinarySearch
   attr_reader :root
 
+  def self.get
+    bst = BinarySearch.new
+    initial = gets.strip
+    puts initial
+
+    root = bst.insert(Integer(gets.strip))
+    term_count = 2
+    while term_count > 0
+      el = gets.strip
+      if el == "TERM"
+        term_count -= 1
+      else
+         bst.insert(el.to_i)
+         term_count += 1
+      end
+    end
+    bst
+  end
+
   def self.load(name)
     file = File.readlines(name)
     tree = BinarySearch.new
@@ -44,6 +63,14 @@ class BinarySearch
     rvalue = node.rchild.nil? ? 0 : self.size(node.rchild)
     curr + lvalue + rvalue
   end
+
+  def max_width
+    left = self.root.lchild
+    right = self.root.rchild
+    max_wid_left = left.nil? ? 0 : left.max_width
+    max_wid_right = right.nil? ? 0 : right.max_width
+    puts [self.root.max_width, max_wid_left, max_wid_right].max
+  end
 end
 
 class TreeNode
@@ -75,5 +102,17 @@ class TreeNode
     else
       put "already added"
     end
+  end
+
+  def max_width
+    max_left = self.lchild.nil? ? 0 : self.lchild.max_path
+    max_right = self.rchild.nil? ? 0 : self.rchild.max_path
+    max_left + max_right + 1
+  end
+
+  def max_path
+    left =  self.lchild.nil? ? 0 : self.lchild.max_path
+    right = self.rchild.nil? ? 0 : self.rchild.max_path
+    [left, right].max + 1
   end
 end
