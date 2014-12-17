@@ -1,0 +1,91 @@
+/* Utils*/
+p, div, h1, h2, h3, head, main, body{
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, p, a, span, li, td, th {
+  font-family:  Helvetica, Arial, sans-serif;
+}
+a {
+  text-decoration: none;
+}
+
+.clear:after {
+  display: block;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+main {
+  width: 100vw;
+}
+/* Reuses*/
+
+.button.primary{
+  display: block;
+  font-size: 20px;
+  font-weight: 800;
+  background-color: #298bd5;
+  border-radius: 13px;
+  padding: 12px 10px;
+  border-bottom: 2px solid #097fc9;
+}
+
+.button.primary:hover{
+  background-color: #097fc9;
+}
+
+
+/* hero*/
+.hero:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  display: block;
+  background-image: url('hero.jpg');
+  opacity: .8;
+  width: 100vw;
+  height: 54vh;
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+}
+
+.hero {
+  height: 54vh;
+  display: block;
+  width: 100vw;
+}
+
+.hero h1, p, a {
+  color: #fff;
+}
+
+.hero .call-to-action {
+  font-weight: 600;
+  font-size: 7vh;
+  margin: auto;
+  padding-top: 14vh;
+  text-align: center;
+}
+
+.hero > p {
+  font-size: 4vh;
+  margin: auto;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.hero .button {
+  width: 125px;
+  margin: 6vh auto 0;
+}
