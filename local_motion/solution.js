@@ -1,54 +1,48 @@
 function turn(vehicles,peoples,buildings){
-  // for (var j = 0 ; j < vehicles.length; j++) {
-  //   var vehicle = vehicles[j]
-  //   if (!vehicle.dest) {
-  //     findNearestPickUp(vehicle, peoples, buildings);
-  //   };
-  //   if (vehicle.dest) {
-  //     action(vehicle, peoples, buildings);
-  //   };
-  // }
-    var vehicle = vehicles[0]
+  for (var j = 0 ; j < vehicles.length; j++) {
+    var vehicle = vehicles[j]
     if (!vehicle.dest) {
       vehicle.dest = [];
     }
     if (vehicle.dest.length < 1) {
       findNearestPickUp(vehicle, peoples, buildings);
     };
-    if (vehicle.dest.length > 0) {
-      action(vehicle, peoples, buildings);
-    };
+    action(vehicle, peoples, buildings);
+  }
 };
 
-
+function getQueue(peoples) {
+  return peoples.filter(function(person){
+    return !person.hasOwnProperty("waitting")
+  })
+}
 
 function findNearestPickUp(vehicle, peoples, buildings) {
   var shortest = 1000;
   var nearest_person = null;
-  var queue = peoples.filter(function(person){
-      return !person.hasOwnProperty("waitting")
-  })
+  var queue = getQueue(peoples);
+
   for (var i = 0; i < queue.length; i++) {
     var person = queue[i];
     var d_pickup = distance(vehicle, person);
     var d_trip = tripDistance(person, buildings)
-    var total_distance = d_pickup + d_trip * 3;
-    if (person.time > total_distance
-         && total_distance < shortest) {
+    var d_total = d_pickup + d_trip;
+    var deadline = person.time - d_trip * 2;
+
+    if (deadline > d_pickup
+         && d_total < shortest) {
       nearest_person = person;
-      shortest = total_distance
+      shortest = total_distance;
     };
   };
+
   if (nearest_person) {
-
-    console.log('found new passenger')
-
     nearest_person.waitting = true;
+    var dest_building = findBuilding(nearest_person.destination, buildings);
     vehicle.dest.push(nearest_person);
-    vehicle.pickup = true;
-    console.log(nearest_person)
-    console.log(vehicle)
+    vehicle.dest.push(dest_building);
   };
+
 };
 
 function distance(ob1, ob2) {
@@ -63,29 +57,14 @@ function tripDistance(person, buildings) {
 
 function action(vehicle, peoples, buildings) {
   if (distance(vehicle, vehicle.dest[0]) === 0 ) {
-    if(vehicle.pickup) {
-      var passenger = vehicle.dest[0]
-      vehicle.dest[0] = findBuilding(passenger.destination, buildings);
-      vehicle.pick(passenger);
-      vehicle.pickup = false;
-      // recalculatePath(vehicle, peoples, buildings);
-    } else {
-      vehicle.dest = vehicle.dest.slice(1);
+    if(vehicle.dest[0].hasOwnProperty("destination")) {
+      vehicle.pick(vehicle.dest[0]);
     }
+    vehicle.dest = vehicle.dest.slice(1);
   } else {
     vehicle.moveTo(vehicle.dest[0]);
   }
 };
-
-// function recalculatePath(vehicle, peoples, buildings) {
-//   var queue = peoples.filter(function(person){
-//     return !person.hasOwnProperty("waitting")
-//   })
-//
-//   for (var i = 0; i < queue.length; i++) {
-//
-//   }
-// }
 
 function findBuilding(name, buildings) {
   for (var i = 0; i < buildings.length; i++) {
